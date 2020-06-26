@@ -1,0 +1,15 @@
+export { Center } from './center.entity';
+export { Course } from './course.entity';
+export { Student } from './student.entity';
+export { Parent } from './parent.entity';
+export { Teacher } from './teacher.entity';
+export { Group } from './group.entity';
+export { Level } from './level.entity';
+export { Department } from './department.entity';
+export { CourseGroup } from './course.group.entity';
+export { CourseDepartment } from './course.department.entity';
+export { CourseStudent } from './course.student.entity';
+export { CourseTeacher } from './course.teacher.entity';
+export { CourseGroupStudent } from './course.group.student.entity';
+export { CourseGroupTeacher } from './course.group.teacher.entity';
+export { CourseDepartmentTeacher } from './course.department.teacher.entity';
