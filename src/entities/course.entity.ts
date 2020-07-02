@@ -1,5 +1,5 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { BaseEntity } from '../common/shared/entities';
+import { BaseEntity } from './base.entity';
 import {
   CourseStudent,
   CourseTeacher,

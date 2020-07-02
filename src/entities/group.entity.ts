@@ -1,5 +1,5 @@
 import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
-import { BaseEntity } from '../common/shared/entities/base.entity';
+import { BaseEntity } from './base.entity';
 import { CourseGroup, Level } from './';
 
 @Entity({ name: 'groups' })

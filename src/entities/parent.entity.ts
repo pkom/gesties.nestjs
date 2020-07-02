@@ -1,5 +1,5 @@
 import { Entity, ManyToMany } from 'typeorm';
-import { PersonEntity } from '../common/shared/entities';
+import { PersonEntity } from './person.entity';
 import { Student } from '.';
 
 @Entity({ name: 'parents' })

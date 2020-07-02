@@ -13,7 +13,7 @@ import {
   CourseGroup,
   CourseGroupStudent, CourseGroupTeacher,
 } from '.';
-import { TimeStampEntity } from '../common/shared/entities/timestamp.entity';
+import { TimeStampEntity } from './timestamp.entity';
 
 @Entity({ name: 'courses_students' })
 export class CourseStudent extends TimeStampEntity {

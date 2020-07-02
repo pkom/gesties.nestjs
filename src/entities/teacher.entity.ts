@@ -1,5 +1,5 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { PersonEntity } from '../common/shared/entities';
+import { PersonEntity } from './person.entity';
 import { Rayuela } from '../common/shared/entities/rayuela';
 import { CourseTeacher } from '.';
 

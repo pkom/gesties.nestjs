@@ -1,5 +1,5 @@
 import { Column, Index } from 'typeorm';
-import { IdType } from '../enums/id.types';
+import { IdType } from '../common/shared/enums/id.types';
 import { BaseEntity } from './base.entity';
 
 @Index(['idType', 'idNumber'], { unique: true })

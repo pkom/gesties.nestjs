@@ -1,5 +1,5 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { BaseEntity } from '../common/shared/entities/base.entity';
+import { BaseEntity } from './base.entity';
 import { Group } from '.';
 
 @Entity({ name: 'levels' })

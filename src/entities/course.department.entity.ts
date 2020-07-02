@@ -8,7 +8,7 @@ import {
   Column,
 } from 'typeorm';
 import { Course, Department, CourseTeacher, CourseDepartmentTeacher } from '.';
-import { TimeStampEntity } from '../common/shared/entities/timestamp.entity';
+import { TimeStampEntity } from './timestamp.entity';
 
 @Entity({ name: 'courses_departments' })
 export class CourseDepartment extends TimeStampEntity {

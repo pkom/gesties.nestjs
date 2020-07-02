@@ -1,6 +1,6 @@
 import { Entity, ManyToOne, PrimaryColumn, JoinColumn } from 'typeorm';
 import { CourseDepartment, CourseTeacher } from '.';
-import { TimeStampEntity } from '../common/shared/entities/timestamp.entity';
+import { TimeStampEntity } from './timestamp.entity';
 
 @Entity({ name: 'courses_departments_teachers' })
 export class CourseDepartmentTeacher extends TimeStampEntity {
