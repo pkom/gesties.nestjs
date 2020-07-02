@@ -28,6 +28,15 @@ class ConfigService {
     return mode != 'DEV';
   }
 
+  public getLdapConfig() {
+    return {
+      host: this.getValue('LDAP_HOST'),
+      user: this.getValue('LDAP_USER'),
+      password: this.getValue('LDAP_USER_PASSWORD'),
+      certificate: this.getValue('LDAP_CERT_FILE'),
+    };
+  }
+
   public getTypeOrmConfig(): TypeOrmModuleOptions {
     return {
       type: 'postgres',
@@ -61,7 +70,6 @@ const configService = new ConfigService(process.env).ensureValues([
   'POSTGRES_PASSWORD',
   'POSTGRES_DATABASE',
   'LDAP_HOST',
-  'LDAP_PORT',
   'LDAP_USER',
   'LDAP_USER_PASSWORD',
   'LDAP_CERT_FILE',

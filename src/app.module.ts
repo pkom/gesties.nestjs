@@ -7,6 +7,8 @@ import { TeachersModule } from './modules/teachers/teachers.module';
 import { GroupsModule } from './modules/groups/groups.module';
 import { DepartmentsModule } from './modules/departments/departments.module';
 import { CoursesModule } from './modules/courses/courses.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { CoursesModule } from './modules/courses/courses.module';
     GroupsModule,
     DepartmentsModule,
     CoursesModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
