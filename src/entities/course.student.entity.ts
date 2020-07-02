@@ -11,7 +11,8 @@ import {
   Course,
   Student,
   CourseGroup,
-  CourseGroupStudent, CourseGroupTeacher,
+  CourseGroupStudent,
+  CourseGroupTeacher,
 } from '.';
 import { TimeStampEntity } from './timestamp.entity';
 
@@ -59,5 +60,4 @@ export class CourseStudent extends TimeStampEntity {
     courseGroup => courseGroup.delegateStudent,
   )
   delegateGroup: CourseGroup;
-
 }

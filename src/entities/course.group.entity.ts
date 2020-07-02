@@ -7,7 +7,14 @@ import {
   JoinColumn,
   Column,
 } from 'typeorm';
-import { Course, Group, CourseStudent, CourseGroupStudent, CourseTeacher, CourseGroupTeacher } from '.';
+import {
+  Course,
+  Group,
+  CourseStudent,
+  CourseGroupStudent,
+  CourseTeacher,
+  CourseGroupTeacher,
+} from '.';
 import { TimeStampEntity } from './timestamp.entity';
 
 @Entity({ name: 'courses_groups' })
