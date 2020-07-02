@@ -3,11 +3,6 @@ import { config } from 'dotenv';
 
 config();
 
-enum Environment {
-  PRODUCTION = 'PROD',
-  DEVELOPMENT = 'DEV',
-  TEST = 'TEST',
-}
 class ConfigService {
   constructor(private env: { [k: string]: string | undefined }) {}
 
@@ -30,7 +25,7 @@ class ConfigService {
 
   public isProduction() {
     const mode = this.getValue('MODE', false);
-    return mode === Environment.PRODUCTION;
+    return mode != 'DEV'
   }
 
   public getTypeOrmConfig(): TypeOrmModuleOptions {
@@ -40,18 +35,20 @@ class ConfigService {
       port: parseInt(this.getValue('POSTGRES_PORT')),
       username: this.getValue('POSTGRES_USER'),
       password: this.getValue('POSTGRES_PASSWORD'),
-      database: this.isProduction()
-        ? this.getValue('POSTGRES_DATABASE_PRODUCTION')
-        : this.getValue('POSTGRES_DATABASE_DEVELOPMENT'),
-      synchronize: !this.isProduction(),
+      database: this.getValue('POSTGRES_DATABASE'),
       entities: [__dirname + '/../entities/**/*.entity.{ts,js}'],
-      logging: !this.isProduction() ? 'all' : ['error'],
-      // migrations
+      // entities: ['**/*.entity.{ts,js}'],
+
+      synchronize: !this.isProduction(),
+
+      logging: this.isProduction() ? ['error'] : 'all',
+
       migrationsTableName: 'migration',
       migrations: ['src/migration/*.ts'],
       cli: {
         migrationsDir: 'src/migration',
       },
+
       ssl: this.isProduction(),
     };
   }
@@ -62,12 +59,12 @@ const configService = new ConfigService(process.env).ensureValues([
   'POSTGRES_PORT',
   'POSTGRES_USER',
   'POSTGRES_PASSWORD',
-  'POSTGRES_DATABASE_PRODUCTION',
-  'POSTGRES_DATABASE_DEVELOPMENT',
+  'POSTGRES_DATABASE',
   'LDAP_HOST',
   'LDAP_PORT',
   'LDAP_USER',
   'LDAP_USER_PASSWORD',
+  'LDAP_CERT_FILE',
 ]);
 
 export { configService };
