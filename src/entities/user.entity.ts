@@ -1,7 +1,5 @@
-import { Entity, Column, OneToOne } from 'typeorm';
-import { BaseEntity } from './base.entity';
-import { Student } from './student.entity';
-import { Teacher } from './teacher.entity';
+import { Entity, Column, OneToOne, ManyToMany, JoinTable } from 'typeorm';
+import { BaseEntity, Student, Teacher, Role } from '.';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -30,8 +28,17 @@ export class User extends BaseEntity {
   cn: string;
 
   @OneToOne(() => Student, { eager: true })
+  @JoinTable({ name: 'student_id' })
   student: Student;
 
   @OneToOne(() => Teacher, { eager: true })
+  @JoinTable({ name: 'teacher_id' })
   teacher: Teacher;
+
+  @ManyToMany(
+    () => Role,
+    role => role.users,
+  )
+  @JoinTable({ name: 'user_roles' })
+  roles: Role[];
 }
