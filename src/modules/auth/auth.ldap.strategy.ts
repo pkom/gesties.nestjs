@@ -15,9 +15,13 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
           url: configService.getLdapConfig().host,
           bindDN: configService.getLdapConfig().user,
           bindCredentials: configService.getLdapConfig().password,
-          searchBase: 'o=users,o=example.com',
+          searchBase: 'ou=People,dc=instituto,dc=extremadura,dc=es',
           searchFilter: '(uid={{username}})',
-          searchAttributes: ['displayName', 'mail'],
+          searchAttributes: ['employeeNumber', 'cn', 'givenName', 'sn', 'uid'],
+          groupSearchBase: 'ou=Group,dc=instituto,dc=extremadura,dc=es',
+          groupSearchAttributes: ['cn'],
+          groupSearchFilter:
+            '(&(objectClass=groupOfNames)(memberUid={{username}}))',
         },
       },
       async (req: Request, user: any, done) => {
