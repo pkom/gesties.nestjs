@@ -1,5 +1,7 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { Student } from './student.entity';
+import { Teacher } from './teacher.entity';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -26,4 +28,10 @@ export class User extends BaseEntity {
 
   @Column({ type: 'varchar', length: 100, nullable: true })
   cn: string;
+
+  @OneToOne(() => Student, { eager: true })
+  student: Student;
+
+  @OneToOne(() => Teacher, { eager: true })
+  teacher: Teacher;
 }
