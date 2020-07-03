@@ -1,6 +1,6 @@
 import * as Strategy from 'passport-ldapauth';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
 
 import { configService } from '../../config/config.service';
