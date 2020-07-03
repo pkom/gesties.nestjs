@@ -46,7 +46,7 @@ class ConfigService {
       password: this.getValue('POSTGRES_PASSWORD'),
       database: this.getValue('POSTGRES_DATABASE'),
       entities: [__dirname + '/../entities/**/*.entity.{ts,js}'],
-      // entities: ['**/*.entity.{ts,js}'],
+      // entities: ['src/entities/*.entity.{ts,js}'],
 
       synchronize: !this.isProduction(),
 
