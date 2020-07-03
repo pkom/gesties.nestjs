@@ -1,8 +1,8 @@
-import { Entity, Column, OneToMany } from 'typeorm';
-import { TimeStampEntity } from './timestamp.entity';
+import { Entity, Column } from 'typeorm';
+import { BaseEntity } from './base.entity';
 
 @Entity({ name: 'users' })
-export class User extends TimeStampEntity {
+export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 25, unique: true })
   uid: string;
 

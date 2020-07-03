@@ -1,5 +1,6 @@
 export { Center } from './center.entity';
 export { Course } from './course.entity';
+export { User } from './user.entity';
 export { Student } from './student.entity';
 export { Parent } from './parent.entity';
 export { Teacher } from './teacher.entity';
