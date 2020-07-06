@@ -10,6 +10,9 @@ import { BaseEntity, Student, Teacher, Role } from '.';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
+  @Column({ type: 'varchar', length: 150, unique: true })
+  dn: string;
+
   @Column({ type: 'varchar', length: 25, unique: true })
   uid: string;
 
