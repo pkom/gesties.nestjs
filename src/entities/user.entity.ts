@@ -34,6 +34,9 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 100, nullable: true })
   cn: string;
 
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  password: string;
+
   @OneToOne(() => Student, { eager: true })
   @JoinColumn({ name: 'student_id' })
   student: Student;
