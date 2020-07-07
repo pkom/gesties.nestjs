@@ -37,6 +37,10 @@ class ConfigService {
     };
   }
 
+  public getJwtSecret() {
+    return this.getValue('JWT_SECRET');
+  }
+
   public getTypeOrmConfig(): TypeOrmModuleOptions {
     return {
       type: 'postgres',
