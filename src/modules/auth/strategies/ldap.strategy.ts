@@ -5,8 +5,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
 
-import { configService } from '../../config/config.service';
-import { LdapUserDto } from './dto/ldapUserDto';
+import { configService } from '../../../config/config.service';
+import { LdapUserDto } from '../dto/ldapUserDto';
 
 @Injectable()
 export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
