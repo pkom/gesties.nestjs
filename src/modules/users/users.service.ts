@@ -17,4 +17,8 @@ export class UsersService {
     }
     return await this.usersRepository.save(user).then(e => e);
   }
+
+  async findOne(username: string): Promise<User | undefined> {
+    return await this.usersRepository.findOne({ uid: username });
+  }
 }
