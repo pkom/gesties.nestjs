@@ -25,7 +25,7 @@ class ConfigService {
 
   public isProduction() {
     const mode = this.getValue('MODE', false);
-    return mode != 'DEV';
+    return mode != 'development';
   }
 
   public getLdapConfig() {
@@ -44,16 +44,15 @@ class ConfigService {
   public getTypeOrmConfig(): TypeOrmModuleOptions {
     return {
       type: 'postgres',
-      host: this.getValue('POSTGRES_HOST'),
-      port: parseInt(this.getValue('POSTGRES_PORT')),
-      username: this.getValue('POSTGRES_USER'),
-      password: this.getValue('POSTGRES_PASSWORD'),
-      database: this.getValue('POSTGRES_DATABASE'),
+      host: this.getValue('DATABASE_HOST'),
+      port: parseInt(this.getValue('DATABASE_PORT')),
+      username: this.getValue('DATABASE_USER'),
+      password: this.getValue('DATABASE_PASSWORD'),
+      database: this.getValue('DATABASE_NAME'),
+
       entities: [__dirname + '/../entities/**/*.entity.{ts,js}'],
-      // entities: ['src/entities/*.entity.{ts,js}'],
 
       synchronize: !this.isProduction(),
-
       logging: this.isProduction() ? ['error'] : 'all',
 
       migrationsTableName: 'migration',
@@ -69,16 +68,16 @@ class ConfigService {
 
 const configService = new ConfigService(process.env).ensureValues([
   'PORT',
-  'POSTGRES_HOST',
-  'POSTGRES_PORT',
-  'POSTGRES_USER',
-  'POSTGRES_PASSWORD',
-  'POSTGRES_DATABASE',
+  'JWT_SECRET',
+  'DATABASE_HOST',
+  'DATABASE_PORT',
+  'DATABASE_USER',
+  'DATABASE_PASSWORD',
+  'DATABASE_NAME',
   'LDAP_HOST',
   'LDAP_USER',
   'LDAP_USER_PASSWORD',
   'LDAP_CERT_FILE',
-  'JWT_SECRET',
 ]);
 
 export { configService };
