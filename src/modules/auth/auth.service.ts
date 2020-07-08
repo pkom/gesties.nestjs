@@ -11,15 +11,6 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
-    if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
-  }
-
   login(ldapUserDto: LdapUserDto) {
     const user = new User();
     user.uid = ldapUserDto.uid;
