@@ -68,6 +68,7 @@ class ConfigService {
 }
 
 const configService = new ConfigService(process.env).ensureValues([
+  'PORT',
   'POSTGRES_HOST',
   'POSTGRES_PORT',
   'POSTGRES_USER',
@@ -77,7 +78,7 @@ const configService = new ConfigService(process.env).ensureValues([
   'LDAP_USER',
   'LDAP_USER_PASSWORD',
   'LDAP_CERT_FILE',
-  'JWT_SECRET'
+  'JWT_SECRET',
 ]);
 
 export { configService };
