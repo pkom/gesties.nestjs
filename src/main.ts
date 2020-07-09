@@ -1,4 +1,5 @@
 import * as helmet from 'helmet';
+import * as compression from 'compression';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -32,6 +33,7 @@ async function bootstrap() {
   if (config.isProduction) {
     app.use(helmet());
     app.enableCors();
+    app.use(compression());
   }
 
   await app.listen(config.port);
