@@ -8,6 +8,7 @@ import { AppConfigService } from './config/config.service';
 import { AllExceptionsFilter } from './common/shared/filters/exception.filter';
 import { TransformInterceptor } from './common/shared/transform.interceptor';
 import { ValidationPipe } from '@nestjs/common';
+import { JwtAuthGuard } from './common/shared/guards/jwt-auth.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -37,6 +38,8 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  // app.useGlobalGuards(new JwtAuthGuard());
 
   if (config.isProduction) {
     app.use(helmet());
