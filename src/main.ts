@@ -5,6 +5,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppConfigService } from './config/config.service';
 import { AllExceptionsFilter } from './common/shared/filters/exception.filter';
+import { TransformInterceptor } from './common/shared/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +15,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   // app.useGlobalFilters(new AllExceptionsFilter());
+
+  app.useGlobalInterceptors(new TransformInterceptor());
 
   const options = new DocumentBuilder()
     .setTitle('GESTIES')
