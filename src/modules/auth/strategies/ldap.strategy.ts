@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { join } from 'path';
 
 import * as Strategy from 'passport-ldapauth';
 import { PassportStrategy } from '@nestjs/passport';
@@ -38,7 +39,9 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
           groupSearchFilter:
             '(&(objectClass=groupOfNames)(memberUid={{username}}))',
           tlsOptions: {
-            ca: readFileSync(config.ldapCert),
+            ca: readFileSync(
+              join(__dirname, '../../../../../ssl', config.ldapCert),
+            ),
           },
         },
       },
