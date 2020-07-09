@@ -37,4 +37,4 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # Server certificates
-src/ssl/*
+ssl/*
