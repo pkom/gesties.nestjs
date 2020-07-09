@@ -6,15 +6,20 @@ import { LdapStrategy } from './strategies/ldap.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
-import { configService } from '../../config/config.service';
+import { AppConfigService } from '../../config/config.service';
+import { AppConfigModule } from '../../config/config.module';
 
 @Module({
   imports: [
     UsersModule,
     PassportModule,
-    JwtModule.register({
-      secret: configService.getJwtSecret(),
-      signOptions: { expiresIn: '60s' },
+    JwtModule.registerAsync({
+      imports: [AppConfigModule],
+      useFactory: async (config: AppConfigService) => ({
+        secret: config.jwtSecret,
+        signOptions: { expiresIn: config.jwtTokenExp },
+      }),
+      inject: [AppConfigService],
     }),
   ],
   providers: [AuthService, LdapStrategy, JwtStrategy],

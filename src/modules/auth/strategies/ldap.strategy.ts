@@ -5,12 +5,12 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
 
-import { configService } from '../../../config/config.service';
 import { LdapUserDto } from '../dto/ldapUserDto';
+import { AppConfigService } from '../../../config/config.service';
 
 @Injectable()
 export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
-  constructor() {
+  constructor(private config: AppConfigService) {
     super(
       {
         usernameField: 'username',
@@ -18,9 +18,9 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
         handleErrorsAsFailures: true,
         passReqToCallback: true,
         server: {
-          url: configService.getLdapConfig().host,
-          bindDN: configService.getLdapConfig().user,
-          bindCredentials: configService.getLdapConfig().password,
+          url: config.ldapHost,
+          bindDN: config.ldapUser,
+          bindCredentials: config.ldapPass,
           searchBase: 'ou=People,dc=instituto,dc=extremadura,dc=es',
           searchFilter: '(uid={{username}})',
           searchAttributes: [
@@ -38,7 +38,7 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
           groupSearchFilter:
             '(&(objectClass=groupOfNames)(memberUid={{username}}))',
           tlsOptions: {
-            ca: readFileSync(configService.getLdapConfig().certificate),
+            ca: readFileSync(config.ldapCert),
           },
         },
       },

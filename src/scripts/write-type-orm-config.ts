@@ -1,4 +1,4 @@
-import { configService } from '../config/config.service';
+import { configService } from '../config/config.service.rayuela';
 import fs = require('fs');
 fs.writeFileSync(
   'ormconfig.json',

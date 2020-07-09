@@ -1,6 +1,6 @@
 import { Connection, createConnection, ConnectionOptions } from 'typeorm';
 
-import { configService } from '../../../config/config.service';
+import { configService } from '../../../config/config.service.rayuela';
 
 export async function getConnection(): Promise<Connection> {
   const opt = {

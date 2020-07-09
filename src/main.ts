@@ -3,32 +3,31 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
-// import { configService } from './config/config.service';
-import { ConfigService } from '@nestjs/config';
+import { AppConfigService } from './config/config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const configService = app.get(ConfigService);
+  const config: AppConfigService = app.get(AppConfigService);
 
   app.setGlobalPrefix('api');
 
   const options = new DocumentBuilder()
-    .setTitle('GESIES')
-    .setDescription('GESIES API endpoints')
+    .setTitle('GESTIES')
+    .setDescription('GESTIES API endpoints')
     .setVersion('1.0')
     .addBearerAuth()
-    .addTag('Gesies')
+    .addTag('Gesties')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);
 
-  if (configService.get('MODE') === 'production') {
+  if (config.mode === 'production') {
     app.use(helmet());
     app.enableCors();
   }
 
-  await app.listen(configService.get('PORT'));
+  await app.listen(config.port);
 }
 
 bootstrap();
