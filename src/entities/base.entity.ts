@@ -3,6 +3,7 @@ import {
   Column,
   UpdateDateColumn,
   CreateDateColumn,
+  VersionColumn,
 } from 'typeorm';
 import { TimeStampEntity } from './timestamp.entity';
 
@@ -15,4 +16,7 @@ export abstract class BaseEntity extends TimeStampEntity {
 
   @Column({ type: 'boolean', default: false })
   isArchived: boolean;
+
+  @VersionColumn()
+  version: number;
 }
