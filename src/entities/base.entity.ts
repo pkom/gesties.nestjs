@@ -17,6 +17,6 @@ export abstract class BaseEntity extends TimeStampEntity {
   @Column({ type: 'boolean', default: false })
   isArchived: boolean;
 
-  @VersionColumn()
+  @VersionColumn({ nullable: true })
   version: number;
 }

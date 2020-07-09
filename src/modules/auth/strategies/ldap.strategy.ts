@@ -40,7 +40,7 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
             '(&(objectClass=groupOfNames)(memberUid={{username}}))',
           tlsOptions: {
             ca: readFileSync(
-              join(__dirname, '../../../../../ssl', config.ldapCert),
+              join(__dirname, '../../../../ssl', config.ldapCert),
             ),
           },
         },

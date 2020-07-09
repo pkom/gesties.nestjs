@@ -26,7 +26,6 @@ async function bootstrap() {
     .setDescription('GESTIES API endpoints')
     .setVersion('1.0')
     .addBearerAuth()
-    .setBasePath('api')
     .addTag('Gesties')
     .build();
   const document = SwaggerModule.createDocument(app, options);
