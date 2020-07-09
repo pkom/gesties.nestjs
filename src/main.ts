@@ -22,7 +22,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);
 
-  if (config.mode === 'production') {
+  if (config.isProduction) {
     app.use(helmet());
     app.enableCors();
   }

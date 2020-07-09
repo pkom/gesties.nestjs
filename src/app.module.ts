@@ -30,8 +30,8 @@ import { DatabaseType } from 'typeorm';
         database: config.databaseName,
 
         entities: [join(__dirname, 'entities/*.entity.{ts,js}')],
-        synchronize: config.mode === 'development',
-        logging: config.mode === 'development' ? 'all' : ['error'],
+        synchronize: !config.isProduction,
+        logging: config.isProduction ? ['error'] : 'all',
 
         migrationsTableName: 'migrations',
         migrations: [join(__dirname, 'migrations/*.ts')],
@@ -39,7 +39,7 @@ import { DatabaseType } from 'typeorm';
           migrationsDir: join(__dirname, 'migrations'),
         },
 
-        ssl: config.mode === 'production',
+        ssl: config.isProduction,
       }),
       inject: [AppConfigService],
     }),

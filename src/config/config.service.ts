@@ -16,6 +16,9 @@ export class AppConfigService {
   get mode(): string {
     return this.configService.get<string>('mode');
   }
+  get isProduction(): boolean {
+    return this.configService.get<string>('mode') === 'production';
+  }
   get googleMapsApiKey(): string {
     return this.configService.get<string>('googleMapsApiKey');
   }
