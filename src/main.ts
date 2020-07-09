@@ -6,7 +6,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppConfigService } from './config/config.service';
 import { AllExceptionsFilter } from './common/shared/filters/exception.filter';
-import { TransformInterceptor } from './common/shared/transform.interceptor';
+import { TransformInterceptor } from './common/shared/interceptors/transform.interceptor';
 import { ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from './common/shared/guards/jwt-auth.guard';
 
