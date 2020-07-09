@@ -1,6 +1,11 @@
 import { join } from 'path';
 
-import { Module } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  RequestMethod,
+  MiddlewareConsumer,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { CentersModule } from './modules/centers/centers.module';
@@ -14,7 +19,8 @@ import { CoursesModule } from './modules/courses/courses.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { RolesModule } from './modules/roles/roles.module';
-import { DatabaseType } from 'typeorm';
+
+import { LoggerMiddleware } from './common/shared/middlewares/logger.middleware';
 
 @Module({
   imports: [
@@ -57,3 +63,11 @@ import { DatabaseType } from 'typeorm';
   providers: [],
 })
 export class AppModule {}
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(LoggerMiddleware).forRoutes({
+//       path: '*',
+//       method: RequestMethod.ALL,
+//     });
+//   }
+// }
