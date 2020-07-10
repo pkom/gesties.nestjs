@@ -19,7 +19,7 @@ async function bootstrap() {
 
   // app.useGlobalFilters(new AllExceptionsFilter());
 
-  app.useGlobalInterceptors(new TransformInterceptor());
+  // app.useGlobalInterceptors(new TransformInterceptor());
 
   const options = new DocumentBuilder()
     .setTitle('GESTIES')
