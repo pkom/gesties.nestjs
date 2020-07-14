@@ -1,4 +1,4 @@
-import { Entity, Column, OneToOne, ManyToMany } from 'typeorm';
+import { Entity, Column, ManyToMany } from 'typeorm';
 import { BaseEntity, User } from '.';
 
 @Entity({ name: 'roles' })
