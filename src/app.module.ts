@@ -2,9 +2,9 @@ import { join } from 'path';
 
 import {
   Module,
-  NestModule,
-  RequestMethod,
-  MiddlewareConsumer,
+  // NestModule,
+  // RequestMethod,
+  // MiddlewareConsumer,
 } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -20,7 +20,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { RolesModule } from './modules/roles/roles.module';
 
-import { LoggerMiddleware } from './common/shared/middlewares/logger.middleware';
+// import { LoggerMiddleware } from './common/shared/middlewares/logger.middleware';
 
 @Module({
   imports: [
@@ -28,7 +28,7 @@ import { LoggerMiddleware } from './common/shared/middlewares/logger.middleware'
     TypeOrmModule.forRootAsync({
       imports: [AppConfigModule],
       useFactory: (config: AppConfigService) => ({
-        type: 'postgres',
+        type: 'postgres' as 'postgres',
         host: config.databaseHost,
         port: config.databasePort,
         username: config.databaseUser,
