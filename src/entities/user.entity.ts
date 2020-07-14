@@ -11,7 +11,7 @@ import { BaseEntity, Student, Teacher, Role } from '.';
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 25, unique: true })
-  uid: string;
+  userName: string;
 
   @Column({ type: 'varchar', length: 25 })
   uidNumber: string;
@@ -20,19 +20,19 @@ export class User extends BaseEntity {
   gidNumber: string;
 
   @Column({ type: 'varchar', length: 100, nullable: true })
-  sn: string;
+  lastName: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: true })
-  givenName: string;
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  firstName: string;
 
   @Column({ type: 'varchar', length: 25 })
   employeeNumber: string;
 
-  @Column({ type: 'varchar', length: 25, nullable: true })
-  email: string;
+  @Column({ type: 'varchar', length: 150, nullable: true })
+  fullName: string;
 
   @Column({ type: 'varchar', length: 100, nullable: true })
-  cn: string;
+  email: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
   password: string;
