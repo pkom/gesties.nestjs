@@ -8,10 +8,12 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { AppConfigService } from '../../config/config.service';
 import { AppConfigModule } from '../../config/config.module';
+import { RolesModule } from '../roles/roles.module';
 
 @Module({
   imports: [
     UsersModule,
+    RolesModule,
     PassportModule,
     JwtModule.registerAsync({
       imports: [AppConfigModule],

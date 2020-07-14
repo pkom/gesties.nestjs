@@ -2,10 +2,11 @@ import { readFileSync } from 'fs';
 
 import * as Strategy from 'passport-ldapauth';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 
 import { LdapUserDto } from '../dto/ldapUserDto';
+import { UserDto } from '../../users/dto/user.dto';
 import { AppConfigService } from '../../../config/config.service';
 
 @Injectable()
@@ -42,13 +43,32 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
           },
         },
       },
-      async (req: Request, user: LdapUserDto, done) => {
-        if (user._groups) {
-          user.groups = user._groups.map(group => group.cn);
+      async (req: Request, ldapUserDto: LdapUserDto, done) => {
+        if (ldapUserDto._groups) {
+          ldapUserDto.groups = ldapUserDto._groups.map(group => group.cn);
         }
-        const { controls, _groups, ...userReturned } = user;
-        req.user = userReturned;
-        return done(null, userReturned);
+        if (ldapUserDto.groups.includes('students')) {
+          return done(
+            new UnauthorizedException('Login not allowed to students'),
+            null,
+          );
+        }
+        delete ldapUserDto.dn;
+        delete ldapUserDto.controls;
+        delete ldapUserDto._groups;
+        const userDto: UserDto = {
+          userName: ldapUserDto.uid,
+          uidNumber: ldapUserDto.uidNumber,
+          gidNumber: ldapUserDto.gidNumber,
+          employeeNumber: ldapUserDto.employeeNumber,
+          firstName: ldapUserDto.givenName,
+          lastName: ldapUserDto.sn,
+          email: ldapUserDto.mail,
+          fullName: ldapUserDto.cn,
+          groups: ldapUserDto.groups,
+        };
+        req.user = userDto;
+        return done(null, userDto);
       },
     );
   }

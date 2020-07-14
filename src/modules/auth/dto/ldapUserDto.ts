@@ -8,39 +8,42 @@ export class LdapUserDto implements Readonly<LdapUserDto> {
   sn: string;
   givenName: string;
   employeeNumber: string;
-  email?: string;
+  mail?: string;
   cn: string;
   _groups?: LdapGroupDto[];
-  groups?: string[];
+  groups: string[];
   controls: [];
 
   public static from(dto: Partial<LdapUserDto>) {
     const it = new LdapUserDto();
-    // it.id = dto.id;
-    // it.code = dto.code;
-    // it.denomination = dto.denomination;
+    it.uid = dto.uid;
+    it.sn = dto.sn;
+    it.givenName = dto.givenName;
+    it.cn = it.cn;
+    it.employeeNumber = dto.employeeNumber;
+    it.mail = dto.mail;
     return it;
   }
 
-  public static fromEntity(entity: User) {
+  public static fromEntity(user: User) {
     return this.from({
-      // id: entity.id,
-      // code: entity.code,
-      // denomination: entity.denomination,
+      uid: user.userName,
+      sn: user.lastName,
+      givenName: user.firstName,
+      cn: user.fullName,
+      employeeNumber: user.employeeNumber,
+      mail: user.email,
     });
   }
 
   public toEntity() {
     const it = new User();
-    it.uid = this.uid;
-    it.sn = this.sn;
-    it.givenName = this.givenName;
-    it.uidNumber = this.uidNumber;
-    it.gidNumber = this.uidNumber;
+    it.userName = this.uid;
+    it.lastName = this.sn;
+    it.firstName = this.givenName;
+    it.fullName = this.cn;
     it.employeeNumber = this.employeeNumber;
-    it.email = this.email;
-    it.cn = this.cn;
-    it.roles = [];
+    it.email = this.mail;
     return it;
   }
 }
