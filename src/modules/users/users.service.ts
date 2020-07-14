@@ -1,8 +1,8 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../entities';
-import { LdapUserDto } from '../auth/dto/ldapUserDto';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -11,25 +11,20 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  public async getOrCreate(userDto: LdapUserDto): Promise<User> {
-    let user = await this.usersRepository.findOne({ uid: userDto.uid });
-    if (!user) {
-      user = await this.usersRepository.save(userDto);
-    } else {
-      await this.usersRepository.update({ uid: user.uid }, userDto);
-    }
-    return user;
+  public async findOne(userName: string): Promise<User | undefined> {
+    return await this.usersRepository.findOne({ userName });
   }
 
-  public async create(user: User): Promise<User> {
-    const userCreated = await this.usersRepository.findOne({ uid: user.uid });
-    if (userCreated) {
-      throw new ConflictException(`User ${user.uid} already exists`);
-    }
-    return await this.usersRepository.save(user).then(e => e);
+  public async create(userDto: UserDto): Promise<User> {
+    return await this.usersRepository.save(userDto);
   }
 
-  async findOne(username: string): Promise<User | undefined> {
-    return await this.usersRepository.findOne({ uid: username });
+  public async update(userName: string, userDto: UserDto): Promise<User> {
+    await this.usersRepository.update({ userName }, userDto);
+    return await this.findOne(userName);
+  }
+
+  public async save(user: User): Promise<void> {
+    await this.usersRepository.save(user);
   }
 }
