@@ -50,7 +50,7 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
         if (ldapUserDto.groups.includes('students')) {
           return done(
             new UnauthorizedException('Login not allowed to students'),
-            null,
+            false,
           );
         }
         delete ldapUserDto.dn;
