@@ -22,14 +22,13 @@ export class AuthService {
     // create roles list and include in payload roles property
     const { groups } = userDto;
     delete userDto.groups;
-    let user = await this.usersService.findOne(userDto.userName);
+    let user = await this.usersService.getByName(userDto.userName);
     if (!user) {
       user = await this.usersService.create(userDto);
     } else {
-      await this.usersService.update(userDto.userName, userDto);
+      user = await this.usersService.update(user.id, userDto);
     }
-    await this.setRoles(user.userName, groups);
-    user = await this.usersService.findOne(userDto.userName);
+    user = await this.setRoles(user, groups);
 
     const payload: JwtPayload = {
       sub: user.userName,
@@ -40,7 +39,7 @@ export class AuthService {
     };
   }
 
-  async setRoles(userName: string, groups: string[]): Promise<void> {
+  async setRoles(user: User, groups: string[]): Promise<User> {
     const isAdmin = groups.includes('admins');
     const isTeacher = groups.includes('teachers');
     const isStudent = groups.includes('students');
@@ -75,13 +74,12 @@ export class AuthService {
       }
       roles.push(role);
     }
-    const user = await this.usersService.findOne(userName);
     user.roles = roles;
     return await this.usersService.save(user);
   }
 
   async validateUser(payload: JwtPayload) {
-    const user = await this.usersService.findOne(payload.sub);
+    const user = await this.usersService.getByName(payload.sub);
     return user;
   }
 }

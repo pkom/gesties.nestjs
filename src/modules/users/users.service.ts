@@ -11,23 +11,36 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  public async findOne(userName: string): Promise<User | undefined> {
+  public async getByName(userName: string): Promise<User | undefined> {
     return await this.usersRepository.findOne(
       { userName },
       { relations: ['roles', 'student', 'teacher'] },
     );
   }
 
+  public async getById(id: string): Promise<User | undefined> {
+    return await this.usersRepository.findOne(id, {
+      relations: ['roles', 'student', 'teacher'],
+    });
+  }
+
   public async create(userDto: UserDto): Promise<User> {
     return await this.usersRepository.save(userDto);
   }
 
-  public async update(userName: string, userDto: UserDto): Promise<User> {
-    await this.usersRepository.update({ userName }, userDto);
-    return await this.findOne(userName);
+  public async update(id: string, userDto: UserDto): Promise<User> {
+    await this.usersRepository.update(id, userDto);
+    return await this.getById(id);
   }
 
-  public async save(user: User): Promise<void> {
+  public async save(user: User): Promise<User> {
+    await this.usersRepository.save(user);
+    return await this.getById(user.id);
+  }
+
+  public async delete(id: string): Promise<void> {
+    const user = await this.usersRepository.findOne(id);
+    user.isActive = false;
     await this.usersRepository.save(user);
   }
 }
