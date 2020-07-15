@@ -29,6 +29,7 @@ export class AuthService {
       await this.usersService.update(userDto.userName, userDto);
     }
     await this.setRoles(user.userName, groups);
+    user = await this.usersService.findOne(userDto.userName);
 
     const payload: JwtPayload = {
       sub: user.userName,
