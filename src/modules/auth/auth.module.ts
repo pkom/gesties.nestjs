@@ -14,7 +14,7 @@ import { RolesModule } from '../roles/roles.module';
   imports: [
     UsersModule,
     RolesModule,
-    PassportModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [AppConfigModule],
       useFactory: async (config: AppConfigService) => ({
