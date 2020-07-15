@@ -12,7 +12,10 @@ export class UsersService {
   ) {}
 
   public async findOne(userName: string): Promise<User | undefined> {
-    return await this.usersRepository.findOne({ userName });
+    return await this.usersRepository.findOne(
+      { userName },
+      { relations: ['roles', 'student', 'teacher'] },
+    );
   }
 
   public async create(userDto: UserDto): Promise<User> {
