@@ -20,16 +20,6 @@ export class AuthService {
 
   async validateLdapLogin(userDto: UserDto): Promise<object> {
     try {
-      // create user if does not exist using or mapping ldap to user dto
-      // using groups, process roles creating roles and assign to user
-      // create roles list and include in payload roles property
-
-      // You can add some registration logic here,
-      // to register the user using their thirdPartyId (in this case their googleId)
-      // let user: IUser = await this.usersService.findOneByThirdPartyId(thirdPartyId, provider);
-
-      // if (!user)
-      // user = await this.usersService.registerOAuthUser(thirdPartyId, provider);
       const { groups } = userDto;
       delete userDto.groups;
       let user = await this.usersService.getByName(userDto.userName);
