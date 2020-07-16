@@ -1,3 +1,5 @@
+import { Exclude } from 'class-transformer';
+
 import {
   Entity,
   Column,
@@ -13,9 +15,11 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 25, unique: true })
   userName: string;
 
+  @Exclude()
   @Column({ type: 'varchar', length: 25 })
   uidNumber: string;
 
+  @Exclude()
   @Column({ type: 'varchar', length: 25 })
   gidNumber: string;
 
@@ -28,12 +32,14 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 25 })
   employeeNumber: string;
 
+  @Exclude()
   @Column({ type: 'varchar', length: 150, nullable: true })
   fullName: string;
 
   @Column({ type: 'varchar', length: 100, nullable: true })
   email: string;
 
+  @Exclude()
   @Column({ type: 'varchar', length: 50, nullable: true })
   password: string;
 

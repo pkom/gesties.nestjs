@@ -1,4 +1,6 @@
+import { Exclude } from 'class-transformer';
 import { Entity, Column, OneToMany } from 'typeorm';
+
 import { PersonEntity } from './person.entity';
 import { Rayuela } from '../common/shared/entities/rayuela';
 import { CourseTeacher } from '.';
@@ -8,9 +10,11 @@ export class Teacher extends PersonEntity {
   @Column({ unique: true })
   dni: string;
 
+  @Exclude()
   @Column({ nullable: true })
   photoFile: string;
 
+  @Exclude()
   @Column({ nullable: true })
   photoBase64: string;
 
