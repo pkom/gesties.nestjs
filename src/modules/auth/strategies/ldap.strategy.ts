@@ -1,8 +1,13 @@
 import { readFileSync } from 'fs';
+import { validate } from 'class-validator';
 
 import * as Strategy from 'passport-ldapauth';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import { Request } from 'express';
 
 import { LdapUserDto } from '../dto/ldapUserDto';
@@ -11,7 +16,7 @@ import { AppConfigService } from '../../../config/config.service';
 
 @Injectable()
 export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
-  constructor(private config: AppConfigService) {
+  constructor(private readonly config: AppConfigService) {
     super({
       passReqToCallback: true,
       server: {
@@ -41,30 +46,33 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
     });
   }
   async validate(req: Request, ldapUserDto: LdapUserDto, done: Function) {
-    if (ldapUserDto._groups) {
-      ldapUserDto.groups = ldapUserDto._groups.map(group => group.cn);
+    try {
+      if (ldapUserDto._groups) {
+        ldapUserDto.groups = ldapUserDto._groups.map(group => group.cn);
+      }
+      if (ldapUserDto.groups.includes('students')) {
+        done(new UnauthorizedException('Login not allowed to students'), false);
+      }
+      delete ldapUserDto.dn;
+      delete ldapUserDto.controls;
+      delete ldapUserDto._groups;
+      const userDto = new UserDto();
+      userDto.userName = ldapUserDto.uid;
+      userDto.uidNumber = ldapUserDto.uidNumber;
+      userDto.gidNumber = ldapUserDto.gidNumber;
+      userDto.employeeNumber = ldapUserDto.employeeNumber;
+      userDto.firstName = ldapUserDto.givenName;
+      userDto.lastName = ldapUserDto.sn;
+      userDto.email = ldapUserDto.mail;
+      userDto.fullName = ldapUserDto.cn;
+      userDto.groups = ldapUserDto.groups;
+      const errors = await validate(userDto);
+      if (errors.length > 0) {
+        done(new BadRequestException(errors), false);
+      }
+      done(null, userDto);
+    } catch (error) {
+      done(error, false);
     }
-    if (ldapUserDto.groups.includes('students')) {
-      return done(
-        new UnauthorizedException('Login not allowed to students'),
-        false,
-      );
-    }
-    delete ldapUserDto.dn;
-    delete ldapUserDto.controls;
-    delete ldapUserDto._groups;
-    const userDto: UserDto = {
-      userName: ldapUserDto.uid,
-      uidNumber: ldapUserDto.uidNumber,
-      gidNumber: ldapUserDto.gidNumber,
-      employeeNumber: ldapUserDto.employeeNumber,
-      firstName: ldapUserDto.givenName,
-      lastName: ldapUserDto.sn,
-      email: ldapUserDto.mail,
-      fullName: ldapUserDto.cn,
-      groups: ldapUserDto.groups,
-    };
-    req.user = userDto;
-    return done(null, userDto);
   }
 }

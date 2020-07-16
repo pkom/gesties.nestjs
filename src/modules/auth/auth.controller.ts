@@ -9,9 +9,8 @@ export class AuthController {
 
   @UseGuards(LdapAuthGuard)
   @Post('login')
-  async login(@Request() req): Promise<any> {
-    const jwtToken = await this.authService.login(req.user);
-    return jwtToken;
+  async login(@Request() req) {
+    return await this.authService.validateLdapLogin(req.user);
   }
 
   @UseGuards(JwtAuthGuard)

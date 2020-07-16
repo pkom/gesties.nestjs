@@ -25,4 +25,13 @@ export class TeachersService {
       .save(dto)
       .then(e => CreateTeacherDTO.fromEntity(e));
   }
+
+  public async getByEmployeeNumber(idNumber: string): Promise<Teacher | void> {
+    return await this.teachersRepository.findOne({ dni: idNumber });
+  }
+
+  public async save(teacher: Teacher): Promise<Teacher> {
+    await this.teachersRepository.save(teacher);
+    return await this.teachersRepository.findOne(teacher.id);
+  }
 }

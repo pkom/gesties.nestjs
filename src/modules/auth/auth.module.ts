@@ -9,10 +9,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { AppConfigService } from '../../config/config.service';
 import { AppConfigModule } from '../../config/config.module';
 import { RolesModule } from '../roles/roles.module';
+import { TeachersModule } from '../teachers/teachers.module';
 
 @Module({
   imports: [
     UsersModule,
+    TeachersModule,
     RolesModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
