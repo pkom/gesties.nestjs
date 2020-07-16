@@ -1,4 +1,7 @@
+import { classToPlain } from 'class-transformer';
+
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+
 import { UsersService } from '../users/users.service';
 import { UserDto } from '../users/dto/user.dto';
 import { RoleDto } from '../roles/dto/role.dto';
@@ -39,7 +42,8 @@ export class AuthService {
       }
 
       const payload: JwtPayload = {
-        sub: user.userName,
+        username: user.userName,
+        sub: user.id,
         roles: user.roles.map(role => role.name as UserRole),
       };
       return {
@@ -115,8 +119,8 @@ export class AuthService {
   }
 
   async validateUser(payload: JwtPayload) {
-    const user = await this.usersService.getByName(payload.sub);
-
-    return user;
+    // const user = await this.usersService.getById(payload.sub);
+    // const userr = classToPlain(user);
+    return payload;
   }
 }
