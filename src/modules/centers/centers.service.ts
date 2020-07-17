@@ -2,7 +2,6 @@ import {
   Injectable,
   ConflictException,
   InternalServerErrorException,
-  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Center } from '../../entities';
