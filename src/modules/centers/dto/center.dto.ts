@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsUUID, IsNotEmpty, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsUUID,
+  IsNotEmpty,
+  IsOptional,
+  MaxLength,
+} from 'class-validator';
 import { Center } from '../../../entities';
 
 export class CenterDTO implements Readonly<CenterDTO> {
@@ -10,11 +16,13 @@ export class CenterDTO implements Readonly<CenterDTO> {
   @ApiProperty({ required: true })
   @IsString()
   @IsNotEmpty()
+  @MaxLength(10)
   code: string;
 
   @ApiProperty({ required: true })
   @IsString()
   @IsNotEmpty()
+  @MaxLength(100)
   denomination: string;
 
   public static from(dto: Partial<CenterDTO>) {
