@@ -1,9 +1,6 @@
 .env
 ormconfig.json
 
-# docker postgres volume data
-/pg-data
-
 # compiled output
 /dist
 /node_modules
