@@ -21,6 +21,7 @@ import { UsersModule } from './modules/users/users.module';
 import { RolesModule } from './modules/roles/roles.module';
 
 // import { LoggerMiddleware } from './common/shared/middlewares/logger.middleware';
+import { ConfigurationModule } from './modules/configuration/configuration.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { RolesModule } from './modules/roles/roles.module';
     AuthModule,
     UsersModule,
     RolesModule,
+    ConfigurationModule,
   ],
   controllers: [],
   providers: [],
