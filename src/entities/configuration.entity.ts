@@ -30,7 +30,7 @@ export class Configuration extends BaseEntity {
   @Column({ type: 'varchar', length: 150, nullable: true })
   headMaster: string;
 
-  @OneToOne(() => Course)
+  @OneToOne(() => Course, { eager: true })
   @JoinColumn()
   defaultCourse: Course;
 }
