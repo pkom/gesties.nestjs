@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DatabaseType } from 'typeorm';
+import { resolve, join } from 'path';
 /**
  * Service dealing with app config based operations.
  *
@@ -58,6 +59,7 @@ export class AppConfigService {
     return this.configService.get<string>('ldap.password');
   }
   get ldapCert(): string {
-    return this.configService.get<string>('ldap.certificate');
+    const SSL_DIR = resolve('ssl');
+    return join(SSL_DIR, this.configService.get<string>('ldap.certificate'));
   }
 }
