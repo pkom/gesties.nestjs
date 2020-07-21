@@ -2,7 +2,7 @@ import * as Joi from '@hapi/joi';
 import { Global, Module } from '@nestjs/common';
 import configuration from './configuration';
 import { AppConfigService } from './config.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 /**
  * Import and provide app configuration related classes.
  *
@@ -47,7 +47,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
     }),
   ],
-  providers: [ConfigService, AppConfigService],
-  exports: [ConfigService, AppConfigService],
+  providers: [AppConfigService],
+  exports: [AppConfigService],
 })
 export class AppConfigModule {}
