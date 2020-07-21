@@ -1,6 +1,5 @@
 import {
   Injectable,
-  InternalServerErrorException,
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
@@ -9,7 +8,6 @@ import { Configuration, Course } from '../../entities';
 import { Repository } from 'typeorm';
 
 import { ConfigurationDTO } from './dto/configuration.dto';
-import { options } from '@hapi/joi';
 
 @Injectable()
 export class ConfigurationService {
