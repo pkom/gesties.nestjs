@@ -8,6 +8,8 @@ import {
   ParseUUIDPipe,
   Param,
   UseGuards,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { Configuration } from '../../entities';
 import { ConfigurationService } from './configuration.service';
@@ -17,6 +19,7 @@ import { RolesGuard } from '../../common/shared/guards/roles.guard';
 import { Roles } from '../../common/shared/decorators/roles.decorator';
 import { UserRole } from '../../common/shared/enums/user.roles';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('configuration')
 export class ConfigurationController {
   constructor(private configurationService: ConfigurationService) {}

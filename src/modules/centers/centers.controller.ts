@@ -8,6 +8,8 @@ import {
   UseGuards,
   Delete,
   Param,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { CentersService } from './centers.service';
 import { CenterDTO } from './dto';
@@ -16,6 +18,7 @@ import { UserRole } from '../../common/shared/enums/user.roles';
 import { RolesGuard } from '../../common/shared/guards/roles.guard';
 import { Roles } from '../../common/shared/decorators/roles.decorator';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('center')
 export class CentersController {
   constructor(private centersService: CentersService) {}
