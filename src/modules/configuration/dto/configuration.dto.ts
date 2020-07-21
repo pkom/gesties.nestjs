@@ -4,6 +4,7 @@ import {
   IsOptional,
   IsEmail,
   MaxLength,
+  IsUUID,
 } from 'class-validator';
 
 export class ConfigurationDTO {
@@ -20,35 +21,39 @@ export class ConfigurationDTO {
   @IsOptional()
   @IsString()
   @MaxLength(100)
-  address: string;
+  address?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(25)
-  city: string;
+  city?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(25)
-  state: string;
+  state?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(20)
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @IsOptional()
   @IsEmail()
   @MaxLength(100)
-  email: string;
+  email?: string;
 
   @IsOptional()
   @IsEmail()
   @MaxLength(100)
-  web: string;
+  web?: string;
 
   @IsOptional()
   @IsEmail()
   @MaxLength(150)
-  headMaster: string;
+  headMaster?: string;
+
+  @IsOptional()
+  @IsUUID()
+  defaultCourse?: string;
 }

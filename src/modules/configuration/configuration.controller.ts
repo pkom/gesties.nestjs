@@ -9,6 +9,7 @@ import {
   Param,
   UseGuards,
 } from '@nestjs/common';
+import { Configuration } from '../../entities';
 import { ConfigurationService } from './configuration.service';
 import { ConfigurationDTO } from './dto/configuration.dto';
 import { JwtAuthGuard } from '../../common/shared/guards/jwt-auth.guard';
@@ -21,26 +22,25 @@ export class ConfigurationController {
   constructor(private configurationService: ConfigurationService) {}
 
   @Get()
-  public async get(): Promise<ConfigurationDTO> {
+  public async get(): Promise<Configuration> {
     return await this.configurationService.get();
   }
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMINISTRATOR)
-  @UsePipes(ValidationPipe)
   public async create(
     @Body() configurationDTO: ConfigurationDTO,
-  ): Promise<ConfigurationDTO> {
+  ): Promise<Configuration> {
     return await this.configurationService.create(configurationDTO);
   }
 
   @Post('setdefaultcourse/:courseId')
-  //   @UseGuards(JwtAuthGuard, RolesGuard)
-  //   @Roles(UserRole.ADMINISTRATOR)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMINISTRATOR)
   public async setDefaultCourse(
     @Param('courseId', ParseUUIDPipe) courseId,
-  ): Promise<void> {
+  ): Promise<Configuration> {
     return await this.configurationService.setDefaultCourse(courseId);
   }
 }
