@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 import { Course } from '../../../entities';
 
-export class CreateCourseDTO implements Readonly<CreateCourseDTO> {
+export class CourseDTO implements Readonly<CourseDTO> {
   @ApiProperty({ required: true })
   @IsString()
   @IsNotEmpty()
@@ -12,8 +12,8 @@ export class CreateCourseDTO implements Readonly<CreateCourseDTO> {
   @IsOptional()
   denomination: string;
 
-  public static from(dto: Partial<CreateCourseDTO>) {
-    const it = new CreateCourseDTO();
+  public static from(dto: Partial<CourseDTO>) {
+    const it = new CourseDTO();
     it.course = dto.course;
     it.denomination = dto.denomination;
     return it;
