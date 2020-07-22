@@ -32,10 +32,10 @@ export class ConfigurationController {
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMINISTRATOR)
-  public async create(
+  public create(
     @Body() configurationDTO: ConfigurationDTO,
   ): Promise<Configuration> {
-    return await this.configurationService.create(configurationDTO);
+    return this.configurationService.create(configurationDTO);
   }
 
   @Post(':courseId/setdefaultcourse')
