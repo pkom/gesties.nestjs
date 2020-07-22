@@ -25,8 +25,8 @@ export class ConfigurationController {
   constructor(private configurationService: ConfigurationService) {}
 
   @Get()
-  public async get(): Promise<Configuration> {
-    return await this.configurationService.get();
+  public get(): Promise<Configuration> {
+    return this.configurationService.get();
   }
 
   @Post()

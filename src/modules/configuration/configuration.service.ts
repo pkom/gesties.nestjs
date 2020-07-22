@@ -40,7 +40,7 @@ export class ConfigurationService {
     configuration.city = configurationDTO.city;
     configuration.state = configurationDTO.state;
     configuration.phoneNumber = configurationDTO.phoneNumber;
-    configuration.web = configurationDTO.web;
+    configuration.url = configurationDTO.url;
     configuration.email = configurationDTO.email;
     configuration.headMaster = configurationDTO.headMaster;
     return await this.configurationRepository.save(configuration);
