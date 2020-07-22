@@ -1,7 +1,7 @@
 import {
   Injectable,
   ConflictException,
-  InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Center } from '../../entities';
@@ -15,28 +15,32 @@ export class CentersService {
     private readonly centersRepository: Repository<Center>,
   ) {}
 
-  public async getAll(): Promise<CenterDTO[]> {
-    try {
-      return await this.centersRepository
-        .find()
-        .then(centers => centers.map(e => CenterDTO.fromEntity(e)));
-    } catch (error) {
-      throw new InternalServerErrorException(error.message);
-    }
+  public async getAll(): Promise<Center[]> {
+    return await this.centersRepository.find();
   }
 
-  public async create(centerDto: CenterDTO): Promise<CenterDTO> {
+  public async getById(id: string): Promise<Center> {
+    const center = await this.centersRepository.findOne(id);
+    if (!center) {
+      throw new NotFoundException('Center does not exist');
+    }
+    return center;
+  }
+
+  public async create(centerDTO: CenterDTO): Promise<Center> {
     const center = await this.centersRepository.findOne({
-      code: centerDto.code,
+      code: centerDTO.code,
     });
     if (center) {
-      throw new ConflictException(
-        `Center with code ${centerDto.code} already exists`,
-      );
+      throw new ConflictException(`Center ${centerDTO.code} already exists`);
     }
-    return this.centersRepository
-      .save(centerDto)
-      .then(e => CenterDTO.fromEntity(e));
+    return await this.centersRepository.save(centerDTO);
+  }
+
+  public async update(id: string, centerDTO: CenterDTO): Promise<Center> {
+    const center = await this.getById(id);
+    await this.centersRepository.update(center.id, centerDTO);
+    return await this.getById(center.id);
   }
 
   public async delete(id: string): Promise<DeleteResult> {
