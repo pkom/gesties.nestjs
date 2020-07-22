@@ -41,6 +41,11 @@ export class ConfigurationDTO {
   phoneNumber?: string;
 
   @IsOptional()
+  @IsPhoneNumber('ES')
+  @MaxLength(20)
+  faxNumber?: string;
+
+  @IsOptional()
   @IsEmail()
   @MaxLength(100)
   email?: string;

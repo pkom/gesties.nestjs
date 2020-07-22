@@ -21,6 +21,9 @@ export class Configuration extends BaseEntity {
   @Column({ type: 'varchar', length: 20, nullable: true })
   phoneNumber: string;
 
+  @Column({ type: 'varchar', length: 20, nullable: true })
+  faxNumber: string;
+
   @Column({ type: 'varchar', length: 100, nullable: true })
   email: string;
 

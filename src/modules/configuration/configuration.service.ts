@@ -40,6 +40,7 @@ export class ConfigurationService {
     configuration.city = configurationDTO.city;
     configuration.state = configurationDTO.state;
     configuration.phoneNumber = configurationDTO.phoneNumber;
+    configuration.faxNumber = configurationDTO.faxNumber;
     configuration.url = configurationDTO.url;
     configuration.email = configurationDTO.email;
     configuration.headMaster = configurationDTO.headMaster;
@@ -59,6 +60,7 @@ export class ConfigurationService {
     configuration.city = configurationDTO.city;
     configuration.state = configurationDTO.state;
     configuration.phoneNumber = configurationDTO.phoneNumber;
+    configuration.faxNumber = configurationDTO.faxNumber;
     configuration.url = configurationDTO.url;
     configuration.email = configurationDTO.email;
     configuration.headMaster = configurationDTO.headMaster;
