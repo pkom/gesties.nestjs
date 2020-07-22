@@ -39,7 +39,7 @@ export class ConfigurationController {
     return this.configurationService.create(configurationDTO);
   }
 
-  @Patch('update')
+  @Patch()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMINISTRATOR)
   public update(
