@@ -25,7 +25,7 @@ export class Configuration extends BaseEntity {
   email: string;
 
   @Column({ type: 'varchar', length: 100, nullable: true })
-  web: string;
+  url: string;
 
   @Column({ type: 'varchar', length: 150, nullable: true })
   headMaster: string;

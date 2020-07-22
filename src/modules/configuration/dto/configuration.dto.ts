@@ -5,6 +5,8 @@ import {
   IsEmail,
   MaxLength,
   IsUUID,
+  IsUrl,
+  IsPhoneNumber,
 } from 'class-validator';
 
 export class ConfigurationDTO {
@@ -34,7 +36,7 @@ export class ConfigurationDTO {
   state?: string;
 
   @IsOptional()
-  @IsString()
+  @IsPhoneNumber('ES')
   @MaxLength(20)
   phoneNumber?: string;
 
@@ -44,12 +46,12 @@ export class ConfigurationDTO {
   email?: string;
 
   @IsOptional()
-  @IsEmail()
+  @IsUrl()
   @MaxLength(100)
-  web?: string;
+  url?: string;
 
   @IsOptional()
-  @IsEmail()
+  @IsString()
   @MaxLength(150)
   headMaster?: string;
 
