@@ -41,9 +41,9 @@ export class ConfigurationController {
   @Post(':courseId/setdefaultcourse')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMINISTRATOR)
-  public async setDefaultCourse(
+  public setDefaultCourse(
     @Param('courseId', ParseUUIDPipe) courseId,
   ): Promise<Configuration> {
-    return await this.configurationService.setDefaultCourse(courseId);
+    return this.configurationService.setDefaultCourse(courseId);
   }
 }
