@@ -10,6 +10,7 @@ import {
   UseGuards,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Patch,
 } from '@nestjs/common';
 import { Configuration } from '../../entities';
 import { ConfigurationService } from './configuration.service';
@@ -36,6 +37,15 @@ export class ConfigurationController {
     @Body() configurationDTO: ConfigurationDTO,
   ): Promise<Configuration> {
     return this.configurationService.create(configurationDTO);
+  }
+
+  @Patch('update')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMINISTRATOR)
+  public update(
+    @Body() configurationDTO: ConfigurationDTO,
+  ): Promise<Configuration> {
+    return this.configurationService.update(configurationDTO);
   }
 
   @Post(':courseId/setdefaultcourse')

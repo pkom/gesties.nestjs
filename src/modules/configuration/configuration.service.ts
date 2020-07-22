@@ -46,6 +46,25 @@ export class ConfigurationService {
     return await this.configurationRepository.save(configuration);
   }
 
+  public async update(
+    configurationDTO: ConfigurationDTO,
+  ): Promise<Configuration> {
+    const configuration = await this.configurationRepository.findOne();
+    if (!configuration) {
+      throw new NotFoundException('Configuration does not exist');
+    }
+    configuration.center = configurationDTO.center;
+    configuration.code = configurationDTO.code;
+    configuration.address = configurationDTO.address;
+    configuration.city = configurationDTO.city;
+    configuration.state = configurationDTO.state;
+    configuration.phoneNumber = configurationDTO.phoneNumber;
+    configuration.url = configurationDTO.url;
+    configuration.email = configurationDTO.email;
+    configuration.headMaster = configurationDTO.headMaster;
+    return await this.configurationRepository.save(configuration);
+  }
+
   public async setDefaultCourse(courseId: string): Promise<Configuration> {
     const course = await this.coursesRepository.findOne(courseId);
     if (!course) {
