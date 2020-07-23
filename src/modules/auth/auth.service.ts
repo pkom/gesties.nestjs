@@ -6,7 +6,7 @@ import { UserDTO } from '../users/dto/user.dto';
 import { RoleDTO } from '../roles/dto/role.dto';
 import { UserRole } from '../../common/shared/enums/user.roles';
 import { JwtPayload } from './jwt-payload.interface';
-import { User } from '../../entities';
+import { User, Role } from '../../entities';
 import { UsersRepository } from '../users/users.repository';
 import { TeachersRepository } from '../teachers/teachers.repository';
 import { RolesRepository } from '../roles/roles.repository';
@@ -65,65 +65,35 @@ export class AuthService {
     const isResponsible = groups.includes('responsible');
     const isTeacher = groups.includes('teachers');
     const isStudent = groups.includes('students');
-    const roles = [];
+    const roles: Role[] = [];
     if (isAdministrator) {
-      let role = await this.rolesRepository.findByRoleName(
-        UserRole.ADMINISTRATOR,
-      );
-      if (!role) {
-        const roleAdmin = new RoleDTO();
-        roleAdmin.name = UserRole.ADMINISTRATOR;
-        roleAdmin.description = UserRole.ADMINISTRATOR as string;
-        role = this.rolesRepository.create(roleAdmin);
-      }
-      roles.push(role);
+      roles.push(await this.createRole(UserRole.ADMINISTRATOR));
     }
     if (isResponsible) {
-      let role = await this.rolesRepository.findByRoleName(
-        UserRole.RESPONSIBLE,
-      );
-      if (!role) {
-        const roleResponsible = new RoleDTO();
-        roleResponsible.name = UserRole.RESPONSIBLE;
-        roleResponsible.description = UserRole.RESPONSIBLE as string;
-        role = this.rolesRepository.create(roleResponsible);
-      }
-      roles.push(role);
+      roles.push(await this.createRole(UserRole.RESPONSIBLE));
     }
     if (isAdministration) {
-      let role = await this.rolesRepository.findByRoleName(
-        UserRole.ADMINISTRATION,
-      );
-      if (!role) {
-        const roleAdministration = new RoleDTO();
-        roleAdministration.name = UserRole.ADMINISTRATION;
-        roleAdministration.description = UserRole.ADMINISTRATION as string;
-        role = this.rolesRepository.create(roleAdministration);
-      }
-      roles.push(role);
+      roles.push(await this.createRole(UserRole.ADMINISTRATION));
     }
     if (isTeacher) {
-      let role = await this.rolesRepository.findByRoleName(UserRole.TEACHER);
-      if (!role) {
-        const roleTeacher = new RoleDTO();
-        roleTeacher.name = UserRole.TEACHER;
-        roleTeacher.description = UserRole.TEACHER as string;
-        role = this.rolesRepository.create(roleTeacher);
-      }
-      roles.push(role);
+      roles.push(await this.createRole(UserRole.TEACHER));
     }
     if (isStudent) {
-      let role = await this.rolesRepository.findByRoleName(UserRole.STUDENT);
-      if (!role) {
-        const roleStudent = new RoleDTO();
-        roleStudent.name = UserRole.STUDENT;
-        roleStudent.description = UserRole.STUDENT as string;
-        role = this.rolesRepository.create(roleStudent);
-      }
-      roles.push(role);
+      roles.push(await this.createRole(UserRole.STUDENT));
     }
     user.roles = roles;
     return await this.usersRepository.save(user);
+  }
+
+  private async createRole(userRole: UserRole): Promise<Role> {
+    let role = await this.rolesRepository.findByRoleName(userRole);
+    if (!role) {
+      const roleDTO = new RoleDTO();
+      roleDTO.name = userRole;
+      roleDTO.description = userRole;
+      role = await this.rolesRepository.save(roleDTO);
+    }
+    return role;
   }
 
   async validateUser(payload: JwtPayload) {
