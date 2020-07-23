@@ -1,12 +1,12 @@
 import { Role } from '../../../entities';
 import { UserRole } from 'src/common/shared/enums/user.roles';
 
-export class RoleDto implements Readonly<RoleDto> {
+export class RoleDTO implements Readonly<RoleDTO> {
   name: UserRole;
   description: string;
 
-  public static from(dto: Partial<RoleDto>) {
-    const it = new RoleDto();
+  public static from(dto: Partial<RoleDTO>) {
+    const it = new RoleDTO();
     it.name = dto.name;
     it.description = dto.description;
     return it;
