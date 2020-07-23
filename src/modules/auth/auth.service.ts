@@ -1,44 +1,46 @@
-import { classToPlain } from 'class-transformer';
-
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-
-import { UsersService } from '../users/users.service';
-import { UserDto } from '../users/dto/user.dto';
-import { RoleDto } from '../roles/dto/role.dto';
-import { UserRole } from '../../common/shared/enums/user.roles';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+
+import { UserDTO } from '../users/dto/user.dto';
+import { RoleDTO } from '../roles/dto/role.dto';
+import { UserRole } from '../../common/shared/enums/user.roles';
 import { JwtPayload } from './jwt-payload.interface';
-import { RolesService } from '../roles/roles.service';
 import { User } from '../../entities';
-import { TeachersService } from '../teachers/teachers.service';
+import { UsersRepository } from '../users/users.repository';
+import { TeachersRepository } from '../teachers/teachers.repository';
+import { RolesRepository } from '../roles/roles.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
-    private readonly rolesService: RolesService,
+    @InjectRepository(UsersRepository)
+    private readonly usersRepository: UsersRepository,
+    @InjectRepository(TeachersRepository)
+    private readonly teachersRepository: TeachersRepository,
+    @InjectRepository(RolesRepository)
+    private readonly rolesRepository: RolesRepository,
     private readonly jwtService: JwtService,
-    private readonly teachersService: TeachersService,
   ) {}
 
-  async validateLdapLogin(userDto: UserDto): Promise<object> {
+  async validateLdapLogin(userDTO: UserDTO): Promise<{ token: string }> {
     try {
-      const { groups } = userDto;
-      delete userDto.groups;
-      let user = await this.usersService.getByName(userDto.userName);
+      const { groups } = userDTO;
+      delete userDTO.groups;
+      let user = await this.usersRepository.getByName(userDTO.userName);
       if (!user) {
-        user = await this.usersService.create(userDto);
+        user = this.usersRepository.create(userDTO);
       } else {
-        user = await this.usersService.update(user.id, userDto);
+        await this.usersRepository.update(user.id, { ...userDTO });
       }
       user = await this.setRoles(user, groups);
 
-      const teacher = await this.teachersService.getByEmployeeNumber(
+      const teacher = await this.teachersRepository.getByEmployeeNumber(
         user.employeeNumber,
       );
       if (teacher) {
         user.teacher = teacher;
-        user = await this.usersService.save(user);
+        user = await this.usersRepository.save(user);
       }
 
       const payload: JwtPayload = {
@@ -65,57 +67,63 @@ export class AuthService {
     const isStudent = groups.includes('students');
     const roles = [];
     if (isAdministrator) {
-      let role = await this.rolesService.findOne(UserRole.ADMINISTRATOR);
+      let role = await this.rolesRepository.findByRoleName(
+        UserRole.ADMINISTRATOR,
+      );
       if (!role) {
-        const roleAdmin = new RoleDto();
+        const roleAdmin = new RoleDTO();
         roleAdmin.name = UserRole.ADMINISTRATOR;
         roleAdmin.description = UserRole.ADMINISTRATOR as string;
-        role = await this.rolesService.create(roleAdmin);
+        role = this.rolesRepository.create(roleAdmin);
       }
       roles.push(role);
     }
     if (isResponsible) {
-      let role = await this.rolesService.findOne(UserRole.RESPONSIBLE);
+      let role = await this.rolesRepository.findByRoleName(
+        UserRole.RESPONSIBLE,
+      );
       if (!role) {
-        const roleResponsible = new RoleDto();
+        const roleResponsible = new RoleDTO();
         roleResponsible.name = UserRole.RESPONSIBLE;
         roleResponsible.description = UserRole.RESPONSIBLE as string;
-        role = await this.rolesService.create(roleResponsible);
+        role = this.rolesRepository.create(roleResponsible);
       }
       roles.push(role);
     }
     if (isAdministration) {
-      let role = await this.rolesService.findOne(UserRole.ADMINISTRATION);
+      let role = await this.rolesRepository.findByRoleName(
+        UserRole.ADMINISTRATION,
+      );
       if (!role) {
-        const roleAdministration = new RoleDto();
+        const roleAdministration = new RoleDTO();
         roleAdministration.name = UserRole.ADMINISTRATION;
         roleAdministration.description = UserRole.ADMINISTRATION as string;
-        role = await this.rolesService.create(roleAdministration);
+        role = this.rolesRepository.create(roleAdministration);
       }
       roles.push(role);
     }
     if (isTeacher) {
-      let role = await this.rolesService.findOne(UserRole.TEACHER);
+      let role = await this.rolesRepository.findByRoleName(UserRole.TEACHER);
       if (!role) {
-        const roleTeacher = new RoleDto();
+        const roleTeacher = new RoleDTO();
         roleTeacher.name = UserRole.TEACHER;
         roleTeacher.description = UserRole.TEACHER as string;
-        role = await this.rolesService.create(roleTeacher);
+        role = this.rolesRepository.create(roleTeacher);
       }
       roles.push(role);
     }
     if (isStudent) {
-      let role = await this.rolesService.findOne(UserRole.STUDENT);
+      let role = await this.rolesRepository.findByRoleName(UserRole.STUDENT);
       if (!role) {
-        const roleStudent = new RoleDto();
+        const roleStudent = new RoleDTO();
         roleStudent.name = UserRole.STUDENT;
         roleStudent.description = UserRole.STUDENT as string;
-        role = await this.rolesService.create(roleStudent);
+        role = this.rolesRepository.create(roleStudent);
       }
       roles.push(role);
     }
     user.roles = roles;
-    return await this.usersService.save(user);
+    return await this.usersRepository.save(user);
   }
 
   async validateUser(payload: JwtPayload) {
