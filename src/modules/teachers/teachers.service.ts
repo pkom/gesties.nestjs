@@ -1,14 +1,15 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+
 import { Teacher } from '../../entities';
 import { CreateTeacherDTO } from './dto';
+import { TeachersRepository } from './teachers.repository';
 
 @Injectable()
 export class TeachersService {
   constructor(
-    @InjectRepository(Teacher)
-    private readonly teachersRepository: Repository<Teacher>,
+    @InjectRepository(TeachersRepository)
+    private readonly teachersRepository: TeachersRepository,
   ) {}
 
   public async getAll(): Promise<CreateTeacherDTO[]> {
@@ -24,10 +25,6 @@ export class TeachersService {
     return this.teachersRepository
       .save(dto)
       .then(e => CreateTeacherDTO.fromEntity(e));
-  }
-
-  public async getByEmployeeNumber(idNumber: string): Promise<Teacher | void> {
-    return await this.teachersRepository.findOne({ dni: idNumber });
   }
 
   public async save(teacher: Teacher): Promise<Teacher> {
