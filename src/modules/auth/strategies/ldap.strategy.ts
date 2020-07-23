@@ -11,7 +11,7 @@ import {
 import { Request } from 'express';
 
 import { LdapUserDto } from '../dto/ldapUserDto';
-import { UserDto } from '../../users/dto/user.dto';
+import { UserDTO } from '../../users/dto/user.dto';
 import { AppConfigService } from '../../../config/config.service';
 
 @Injectable()
@@ -56,21 +56,21 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
       delete ldapUserDto.dn;
       delete ldapUserDto.controls;
       delete ldapUserDto._groups;
-      const userDto = new UserDto();
-      userDto.userName = ldapUserDto.uid;
-      userDto.uidNumber = ldapUserDto.uidNumber;
-      userDto.gidNumber = ldapUserDto.gidNumber;
-      userDto.employeeNumber = ldapUserDto.employeeNumber;
-      userDto.firstName = ldapUserDto.givenName;
-      userDto.lastName = ldapUserDto.sn;
-      userDto.email = ldapUserDto.mail;
-      userDto.fullName = ldapUserDto.cn;
-      userDto.groups = ldapUserDto.groups;
-      const errors = await validate(userDto);
+      const userDTO = new UserDTO();
+      userDTO.userName = ldapUserDto.uid;
+      userDTO.uidNumber = ldapUserDto.uidNumber;
+      userDTO.gidNumber = ldapUserDto.gidNumber;
+      userDTO.employeeNumber = ldapUserDto.employeeNumber;
+      userDTO.firstName = ldapUserDto.givenName;
+      userDTO.lastName = ldapUserDto.sn;
+      userDTO.email = ldapUserDto.mail;
+      userDTO.fullName = ldapUserDto.cn;
+      userDTO.groups = ldapUserDto.groups;
+      const errors = await validate(userDTO);
       if (errors.length > 0) {
         done(new BadRequestException(errors), false);
       }
-      done(null, userDto);
+      done(null, userDTO);
     } catch (error) {
       done(error, false);
     }
