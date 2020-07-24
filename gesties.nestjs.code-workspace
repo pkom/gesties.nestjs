@@ -2,6 +2,9 @@
   "folders": [
     {
       "path": "."
+    },
+    {
+      "path": "../../tutos/ionic/udemy/ionic-angular-course"
     }
   ],
   "settings": {
