@@ -24,5 +24,19 @@
       "titleBar.inactiveForeground": "#15202b99"
     },
     "peacock.color": "#42b883"
+  },
+  "extensions": {
+    "recommendations": [
+      // Theming vscode
+      "johnpapa.vscode-peacock",
+      // Using emojis while debugging all the time
+      "perkovec.emoji",
+      // Perfect for documenting complex functions
+      "stevencl.adddoccomments",
+      //Realyy nice SVG Previewer, easy to change colors
+      "simonsiefke.svg-preview",
+      // Livesaver if you work with tailwind
+      "bradlc.vscode-tailwindcss"
+    ]
   }
 }
