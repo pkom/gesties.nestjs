@@ -7,10 +7,11 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppConfigService } from './config/config.service';
 import { AllExceptionsFilter } from './common/shared/filters/exception.filter';
 import { TransformInterceptor } from './common/shared/interceptors/transform.interceptor';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { JwtAuthGuard } from './common/shared/guards/jwt-auth.guard';
 
 async function bootstrap() {
+  const logger = new Logger('NestApplication');
   const app = await NestFactory.create(AppModule);
 
   const config: AppConfigService = app.get(AppConfigService);
@@ -41,12 +42,14 @@ async function bootstrap() {
   // app.useGlobalGuards(new JwtAuthGuard());
 
   if (config.isProduction) {
+    logger.log('Application running in production mode');
     app.use(helmet());
     app.enableCors();
     app.use(compression());
   }
 
   await app.listen(config.port);
+  logger.log(`Application running on port ${config.port}`);
 }
 
 bootstrap();
