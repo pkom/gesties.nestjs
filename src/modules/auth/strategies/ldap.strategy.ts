@@ -7,6 +7,7 @@ import {
   Injectable,
   UnauthorizedException,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { Request } from 'express';
 
@@ -16,6 +17,8 @@ import { AppConfigService } from '../../../config/config.service';
 
 @Injectable()
 export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
+  private logger = new Logger('LdapAuth');
+
   constructor(private readonly config: AppConfigService) {
     super({
       passReqToCallback: true,
@@ -51,6 +54,9 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
         ldapUserDto.groups = ldapUserDto._groups.map(group => group.cn);
       }
       if (ldapUserDto.groups.includes('students')) {
+        this.logger.error(
+          `Student ${ldapUserDto.uid} is trying to authenticate`,
+        );
         done(new UnauthorizedException('Login not allowed to students'), false);
       }
       delete ldapUserDto.dn;
@@ -68,10 +74,14 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
       userDTO.groups = ldapUserDto.groups;
       const errors = await validate(userDTO);
       if (errors.length > 0) {
+        this.logger.error(
+          `Error validating userDTO: ${JSON.stringify(userDTO)}`,
+        );
         done(new BadRequestException(errors), false);
       }
       done(null, userDTO);
     } catch (error) {
+      this.logger.error(`Ldap authentication error`, error.stack);
       done(error, false);
     }
   }
