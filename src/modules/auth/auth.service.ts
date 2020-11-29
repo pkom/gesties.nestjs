@@ -2,24 +2,28 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { UserDTO } from '../users/dto/user.dto';
+import { UserDto } from '../users/dto/user.dto';
 import { RoleDTO } from '../roles/dto/role.dto';
 import { UserRole } from '../../common/shared/enums/user.roles';
 import { JwtPayload } from './jwt-payload.interface';
-import { User, Role } from '../../entities';
+import { User, Role, Course } from '../../entities';
 import { UsersRepository } from '../users/users.repository';
 import { TeachersRepository } from '../teachers/teachers.repository';
 import { RolesRepository } from '../roles/roles.repository';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
   private logger = new Logger('AuthService');
 
   constructor(
+    @InjectRepository(Course)
+    private readonly coursesRepository: Repository<Course>,    
     @InjectRepository(UsersRepository)
     private readonly usersRepository: UsersRepository,
     @InjectRepository(TeachersRepository)
@@ -29,16 +33,21 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateLdapLogin(userDTO: UserDTO): Promise<{ token: string }> {
+  async validateLdapLogin(userDto: UserDto, courseId: string): Promise<{ token: string }> {
+    // check if course exists
+    const course = await this.coursesRepository.findOne(courseId);
+    if (!course) {
+      throw new UnauthorizedException(`Course with id ${courseId} does not exist.`)        
+    }
     try {
-      const { groups } = userDTO;
-      delete userDTO.groups;
-      let user = await this.usersRepository.getByName(userDTO.userName);
+      const { groups } = userDto;
+      delete userDto.groups;
+      let user = await this.usersRepository.getByName(userDto.userName);
       if (!user) {
-        user = this.usersRepository.create(userDTO);
+        user = this.usersRepository.create(userDto);
         this.logger.debug(`User ${user.userName} has been created`);
       } else {
-        await this.usersRepository.update(user.id, { ...userDTO });
+        await this.usersRepository.update(user.id, { ...userDto });
       }
       user = await this.setRoles(user, groups);
 
@@ -53,6 +62,7 @@ export class AuthService {
       const payload: JwtPayload = {
         username: user.userName,
         sub: user.id,
+        courseid: courseId,
         roles: user.roles.map(role => role.name as UserRole),
       };
       this.logger.verbose(`Token generated for user ${user.userName}`);
@@ -61,7 +71,7 @@ export class AuthService {
       };
     } catch (error) {
       this.logger.error(
-        `Error generating token for user ${userDTO.userName}`,
+        `Error generating token for user ${userDto.userName}`,
         error.stack,
       );
       throw new InternalServerErrorException(

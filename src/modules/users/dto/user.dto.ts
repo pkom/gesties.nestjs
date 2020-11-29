@@ -6,7 +6,7 @@ import {
   IsArray,
 } from 'class-validator';
 
-export class UserDTO {
+export class UserDto {
   @IsNotEmpty()
   @IsString()
   userName: string;

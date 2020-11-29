@@ -1,4 +1,4 @@
-export interface LdapUserDto {
+export interface UserLdapDto {
   dn: string;
   uid: string;
   uidNumber: string;

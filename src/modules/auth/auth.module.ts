@@ -10,9 +10,11 @@ import { AppConfigService } from '../../config/config.service';
 import { AppConfigModule } from '../../config/config.module';
 import { RolesModule } from '../roles/roles.module';
 import { TeachersModule } from '../teachers/teachers.module';
+import { CoursesModule } from '../courses/courses.module';
 
 @Module({
   imports: [
+    CoursesModule,
     UsersModule,
     TeachersModule,
     RolesModule,

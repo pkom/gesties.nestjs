@@ -11,8 +11,8 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 
-import { LdapUserDto } from '../dto/ldapUserDto';
-import { UserDTO } from '../../users/dto/user.dto';
+import { UserLdapDto } from '../dto/user-ldap.dto';
+import { UserDto } from '../../users/dto/user.dto';
 import { AppConfigService } from '../../../config/config.service';
 
 @Injectable()
@@ -48,38 +48,38 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
       },
     });
   }
-  async validate(req: Request, ldapUserDto: LdapUserDto, done: Function) {
+  async validate(req: Request, userLdapDto: UserLdapDto, done: Function) {
     try {
-      if (ldapUserDto._groups) {
-        ldapUserDto.groups = ldapUserDto._groups.map(group => group.cn);
+      if (userLdapDto._groups) {
+        userLdapDto.groups = userLdapDto._groups.map(group => group.cn);
       }
-      if (ldapUserDto.groups.includes('students')) {
+      if (userLdapDto.groups.includes('students')) {
         this.logger.error(
-          `Student ${ldapUserDto.uid} is trying to authenticate`,
+          `Student ${userLdapDto.uid} is trying to authenticate`,
         );
         done(new UnauthorizedException('Login not allowed to students'), false);
       }
-      delete ldapUserDto.dn;
-      delete ldapUserDto.controls;
-      delete ldapUserDto._groups;
-      const userDTO = new UserDTO();
-      userDTO.userName = ldapUserDto.uid;
-      userDTO.uidNumber = ldapUserDto.uidNumber;
-      userDTO.gidNumber = ldapUserDto.gidNumber;
-      userDTO.employeeNumber = ldapUserDto.employeeNumber;
-      userDTO.firstName = ldapUserDto.givenName;
-      userDTO.lastName = ldapUserDto.sn;
-      userDTO.email = ldapUserDto.mail;
-      userDTO.fullName = ldapUserDto.cn;
-      userDTO.groups = ldapUserDto.groups;
-      const errors = await validate(userDTO);
+      delete userLdapDto.dn;
+      delete userLdapDto.controls;
+      delete userLdapDto._groups;
+      const userDto = new UserDto();
+      userDto.userName = userLdapDto.uid;
+      userDto.uidNumber = userLdapDto.uidNumber;
+      userDto.gidNumber = userLdapDto.gidNumber;
+      userDto.employeeNumber = userLdapDto.employeeNumber;
+      userDto.firstName = userLdapDto.givenName;
+      userDto.lastName = userLdapDto.sn;
+      userDto.email = userLdapDto.mail;
+      userDto.fullName = userLdapDto.cn;
+      userDto.groups = userLdapDto.groups;
+      const errors = await validate(UserDto);
       if (errors.length > 0) {
         this.logger.error(
-          `Error validating userDTO: ${JSON.stringify(userDTO)}`,
+          `Error validating UserDto: ${JSON.stringify(userDto)}`,
         );
         done(new BadRequestException(errors), false);
       }
-      done(null, userDTO);
+      done(null, userDto);
     } catch (error) {
       this.logger.error(`Ldap authentication error`, error.stack);
       done(error, false);
