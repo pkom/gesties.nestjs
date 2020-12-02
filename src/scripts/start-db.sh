@@ -22,6 +22,7 @@ echo "sleep wait for pg-server [$SERVER] to start";
 sleep 3;
 
 # create the db 
+echo "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";" | docker exec -i $SERVER psql -U postgres
 echo "CREATE DATABASE $DB ENCODING 'UTF-8';" | docker exec -i $SERVER psql -U postgres
 echo "CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD';" | docker exec -i $SERVER psql -U postgres
 echo "ALTER DATABASE $DB OWNER TO $DB_USER;" | docker exec -i $SERVER psql -U postgres
