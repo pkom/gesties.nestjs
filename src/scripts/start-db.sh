@@ -3,16 +3,16 @@ set -e
 
 # ARTICLE: https://medium.com/@gausmann.simon/nestjs-typeorm-and-postgresql-full-example-development-and-project-setup-working-with-database-c1a2b1b11b8f
 
-SERVER="postgres_server";
+SERVER="postgres";
 PW="postgres";
-DB="gesties_dev";
-DB_USER="gesties";
-DB_PASSWORD="gesties";
+DB="iesmjuancalero_dev";
+DB_USER="iesmjuancalero";
+DB_PASSWORD="iesmjuancalero";
 
 echo "echo stop & remove old docker [$SERVER] and starting new fresh instance of [$SERVER]"
 (docker kill $SERVER || :) && \
   (docker rm $SERVER || :) && \
-  docker run --name $SERVER -e POSTGRES_PASSWORD=$PW \
+  docker run --network host --name $SERVER -e POSTGRES_PASSWORD=$PW \
   -e PGPASSWORD=$PW \
   -p 5432:5432 \
   -d postgres
