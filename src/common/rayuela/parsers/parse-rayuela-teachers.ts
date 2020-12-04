@@ -112,7 +112,7 @@ export class ParseRayuelaTeachers {
     } else {
       this.departmentsDTO.push({
         department: department,
-        denomination: department,
+        denomination: department.replace('_', ' '),
         teachers: [dni],
       });
     }
