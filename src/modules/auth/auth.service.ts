@@ -23,7 +23,7 @@ export class AuthService {
 
   constructor(
     @InjectRepository(Course)
-    private readonly coursesRepository: Repository<Course>,    
+    private readonly coursesRepository: Repository<Course>,
     @InjectRepository(UsersRepository)
     private readonly usersRepository: UsersRepository,
     @InjectRepository(TeachersRepository)
@@ -33,11 +33,16 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateLdapLogin(userDto: UserDto, courseId: string): Promise<{ token: string }> {
+  async validateLdapLogin(
+    userDto: UserDto,
+    courseId: string,
+  ): Promise<{ token: string }> {
     // check if course exists
     const course = await this.coursesRepository.findOne(courseId);
     if (!course) {
-      throw new UnauthorizedException(`Course with id ${courseId} does not exist.`)        
+      throw new UnauthorizedException(
+        `Course with id ${courseId} does not exist.`,
+      );
     }
     try {
       const { groups } = userDto;

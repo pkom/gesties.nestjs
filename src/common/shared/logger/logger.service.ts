@@ -74,8 +74,8 @@ export class Logger implements LoggerService {
 
   error(message: any, trace = '', context?: string) {
     const instance = this.getInstance();
-//    instance &&
-//      instance.error.call(instance, message, trace, context || this.context);
+    //    instance &&
+    //      instance.error.call(instance, message, trace, context || this.context);
 
     this.logger.error(`${message} -> (${trace} || 'trace not found!)`, {
       timestamp: new Date().toISOString(),

@@ -20,8 +20,13 @@ export class AuthController {
 
   @UseGuards(LdapAuthGuard)
   @Post('login')
-  login(@Request() req, @Body() userLoginDto: UserLoginDto): Promise<{ token: string }> {
-    this.logger.verbose(`user ${userLoginDto.username} has been authenticated by ldap`);
+  login(
+    @Request() req,
+    @Body() userLoginDto: UserLoginDto,
+  ): Promise<{ token: string }> {
+    this.logger.verbose(
+      `user ${userLoginDto.username} has been authenticated by ldap`,
+    );
     return this.authService.validateLdapLogin(req.user, userLoginDto.courseid);
   }
 

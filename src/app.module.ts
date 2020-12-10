@@ -46,7 +46,7 @@ import { ConfigurationModule } from './modules/configuration/configuration.modul
           migrationsDir: join(__dirname, 'migrations'),
         },
 
-        ssl: config.isProduction,
+        ssl: false, //config.isProduction,
       }),
       inject: [AppConfigService],
     }),
