@@ -47,7 +47,7 @@
     "compression": "^1.7.4",
     "dotenv": "^8.2.0",
     "helmet": "^3.23.3",
-    "jimp": "^0.10.3",
+    "jimp": "^0.16.1",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "nest-winston": "^1.4.0",
