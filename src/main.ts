@@ -12,7 +12,7 @@ import { ValidationPipe, Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const logger = new Logger('NestApplication');
-  
+
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({
@@ -20,11 +20,11 @@ async function bootstrap() {
       transform: true,
       forbidNonWhitelisted: true,
       transformOptions: {
-        enableImplicitConversion: true
-      }      
+        enableImplicitConversion: true,
+      },
     }),
   );
-  
+
   const config: AppConfigService = app.get(AppConfigService);
 
   app.setGlobalPrefix('api');
@@ -42,8 +42,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);
-
-
 
   if (config.isProduction) {
     logger.log('Application running in production mode');
