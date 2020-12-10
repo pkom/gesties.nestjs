@@ -38,7 +38,7 @@ import { ConfigurationModule } from './modules/configuration/configuration.modul
 
         entities: [join(__dirname, 'entities/*.entity.{ts,js}')],
         synchronize: !config.isProduction,
-        logging: config.isProduction ? ['error'] : ['query'],
+        logging: config.isProduction ? ['error'] : ['info'],
 
         migrationsTableName: 'migrations',
         migrations: [join(__dirname, 'migrations/*.ts')],
